@@ -82,50 +82,49 @@ func launchGameFunction(opt GameOptions) func(g *gocui.Gui) error {
 			go func() {
 				for range ticker.C {
 
-					// move pipes
-					for i := range pipes {
-						pipe := &pipes[i]
-						pipe.X = pipe.X - PIPE_SPEED
-
-						if pipe.X <= 0 {
-							pipe.X = 1
-						}
-					}
-
 					var allDead = true
-					for i := range birds {
-						bird := &birds[i]
-						if bird.Dead() {
-							continue
-						}
-						allDead = false
-						var distanceForward = pipes[0].X
-						var nextPipe = pipes[0]
-						for _, pipe := range pipes {
-							if pipe.X < distanceForward && pipe.X > bird.Position().X {
-								distanceForward = pipe.X
-								nextPipe = pipe
+					g.Update(func(g *gocui.Gui) error {
+						// move pipes
+						for i := range pipes {
+							pipe := &pipes[i]
+							pipe.X = pipe.X - PIPE_SPEED
+
+							if pipe.X <= 0 {
+								pipe.X = 1
 							}
 						}
-						bird.DoSomething(distanceForward, nextPipe.Y)
-						bird.DoPhysics()
-						var pos = bird.Position()
+						for i := range birds {
+							bird := &birds[i]
+							if bird.Dead() {
+								continue
+							}
+							allDead = false
+							var distanceForward = pipes[0].X
+							var nextPipe = pipes[0]
+							for _, pipe := range pipes {
+								if pipe.X < distanceForward && pipe.X > bird.Position().X {
+									distanceForward = pipe.X
+									nextPipe = pipe
+								}
+							}
+							bird.DoSomething(distanceForward, nextPipe.Y)
+							bird.DoPhysics()
+							var pos = bird.Position()
 
-						if pos.Y < 0 || pos.Y > 1 {
-							bird.SetDead(true)
-							break
-						}
-						for _, pipe := range pipes {
-							if pos.X >= pipe.X && pos.X <= pipe.X+PIPE_WIDTH {
-								if pos.Y >= pipe.Y || pos.Y <= pipe.Y-PIPE_HOLE_SIZE {
-									bird.SetDead(true)
-									break
+							if pos.Y < 0 || pos.Y > 1 {
+								bird.SetDead(true)
+								break
+							}
+							for _, pipe := range pipes {
+								if pos.X >= pipe.X && pos.X <= pipe.X+PIPE_WIDTH {
+									if pos.Y >= pipe.Y || pos.Y <= pipe.Y-PIPE_HOLE_SIZE {
+										bird.SetDead(true)
+										break
+									}
 								}
 							}
 						}
-					}
 
-					g.Update(func(g *gocui.Gui) error {
 						v, err := g.View("flappy")
 						if err != nil {
 							panic(err)
@@ -139,7 +138,6 @@ func launchGameFunction(opt GameOptions) func(g *gocui.Gui) error {
 						for _, bird := range birds {
 							if bird.Dead() {
 								continue
-
 							}
 							x, y := bird.Position().Spread()
 							xNew, yScreen := Pos(x, y, v)
