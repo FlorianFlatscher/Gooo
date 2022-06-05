@@ -71,6 +71,7 @@ func launchGameFunction(opt GameOptions) func(g *gocui.Gui) error {
 				return err
 			}
 
+			v.Overwrite = true
 			v.FgColor = gocui.ColorMagenta
 
 			//var vWidth, vHeight = v.Size()
@@ -89,7 +90,7 @@ func launchGameFunction(opt GameOptions) func(g *gocui.Gui) error {
 							pipe := &pipes[i]
 							pipe.X = pipe.X - PIPE_SPEED
 
-							if pipe.X <= 0 {
+							if pipe.X+PIPE_WIDTH <= 0 {
 								pipe.X = 1
 							}
 						}
@@ -132,6 +133,15 @@ func launchGameFunction(opt GameOptions) func(g *gocui.Gui) error {
 						v.Clear()
 						var _, height = v.Size()
 
+						// Drawing pipes
+						for _, pipe := range pipes {
+							err := drawBlock(pipe.X, pipe.X+PIPE_WIDTH, pipe.Y, 1, v)
+							err = drawBlock(pipe.X, pipe.X+PIPE_WIDTH, 0, pipe.Y-PIPE_HOLE_SIZE, v)
+							if err != nil {
+								return err
+							}
+						}
+
 						// drawing points
 						var birdsPerY = make([]int, height)
 						var xScreen = 0
@@ -162,15 +172,6 @@ func launchGameFunction(opt GameOptions) func(g *gocui.Gui) error {
 								v.EditWrite('▓')
 							default:
 								v.EditWrite('█')
-							}
-						}
-
-						// Drawing pipes
-						for _, pipe := range pipes {
-							err := drawBlock(pipe.X, pipe.X+PIPE_WIDTH, pipe.Y, 1, v)
-							err = drawBlock(pipe.X, pipe.X+PIPE_WIDTH, 0, pipe.Y-PIPE_HOLE_SIZE, v)
-							if err != nil {
-								return err
 							}
 						}
 
@@ -209,7 +210,7 @@ func drawBlock(x1, x2, y1, y2 float64, v *gocui.View) error {
 	width, height := v.Size()
 	for y := yy1; y <= yy2; y++ {
 		for x := xx1; x <= xx2; x++ {
-			if x < 0 || x >= width || y < 0 || y >= height {
+			if x < 0 || x >= width-1 || y < 0 || y >= height {
 				continue
 			}
 			err := v.SetCursor(x, y)
