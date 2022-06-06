@@ -1,4 +1,4 @@
-package math
+package customMath
 
 type Point struct {
 	X float64

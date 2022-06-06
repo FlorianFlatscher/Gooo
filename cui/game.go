@@ -2,7 +2,7 @@ package cui
 
 import (
 	"Gooo/agent"
-	"Gooo/math"
+	"Gooo/customMath"
 	"fmt"
 	"github.com/jroimartin/gocui"
 	"log"
@@ -77,7 +77,7 @@ func launchGameFunction(opt GameOptions) func(g *gocui.Gui) error {
 			//var vWidth, vHeight = v.Size()
 
 			var birds = opt.Birds
-			var pipes = []math.Point{{X: 0.5, Y: rand.Float64()*0.5 + 0.25}, {X: 1, Y: rand.Float64()*0.5 + 0.25}}
+			var pipes = []customMath.Point{{X: 0.5, Y: rand.Float64()*0.5 + 0.25}, {X: 1, Y: rand.Float64()*0.5 + 0.25}}
 
 			ticker := time.NewTicker(100 * time.Millisecond)
 			go func() {
