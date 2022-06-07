@@ -6,7 +6,7 @@ import (
 )
 
 type Bird struct {
-	score    string
+	score    float64
 	position customMath.Point
 	velocity float64
 	brain    DecisionEngine
@@ -36,7 +36,7 @@ func (b *Bird) DoPhysics() {
 		b.velocity = 0
 	}
 	b.position = customMath.Point{
-		Y: b.position.Y + 0.01 + b.velocity,
+		Y: b.position.Y + 0.02 + b.velocity,
 		X: b.position.X,
 	}
 }
@@ -65,12 +65,16 @@ func (b *Bird) SetPosition(position customMath.Point) {
 	b.position = position
 }
 
-func (b *Bird) Score() string {
+func (b *Bird) Score() float64 {
 	return b.score
 }
 
-func (b *Bird) SetScore(score string) {
+func (b *Bird) SetScore(score float64) {
 	b.score = score
+}
+
+func (b *Bird) IncrementScore(by float64) {
+	b.score += by
 }
 
 func (b *Bird) Brain() DecisionEngine {
@@ -87,4 +91,9 @@ func (b *Bird) Dead() bool {
 
 func (b *Bird) SetDead(dead bool) {
 	b.dead = dead
+}
+
+// Revives the bird by reseting
+func (b *Bird) Revive() Bird {
+	return *NewBird(b.brain)
 }

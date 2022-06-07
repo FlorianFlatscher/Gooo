@@ -11,30 +11,27 @@ import (
 )
 
 type GameOptions struct {
-	Birds []agent.Bird
+	Birds           []agent.Bird
+	Generation      int
+	TopScore        int
+	FramesPerSecond float64
 }
 
-func LaunchGame(opt GameOptions) {
+func LaunchGame(opt GameOptions) error {
+
 	g, err := gocui.NewGui(gocui.OutputNormal)
 	if err != nil {
 		log.Panicln(err)
 	}
 	defer g.Close()
 
-	g.SetManagerFunc(launchGameFunction(opt))
-
-	//if err := g.SetKeybinding("", gocui.KeyTab, gocui.ModNone, quit); err != nil {
-	//	log.Panicln(err)
-	//}
-	//
-	//if err := g.SetKeybinding("", gocui.KeySpace, gocui.ModNone, birdUp); err != nil {
-	//	log.Panicln(err)
-	//}
-	//g.SetManagerFunc(layout)
+	g.SetManagerFunc(generateGameFunction(opt))
 
 	if err := g.MainLoop(); err != nil && err != gocui.ErrQuit {
-		log.Panicln(err)
+		return err
 	}
+	// never
+	return nil
 }
 
 func layout(g *gocui.Gui) error {
@@ -54,8 +51,9 @@ func layout(g *gocui.Gui) error {
 const PIPE_WIDTH = 0.05
 const PIPE_HOLE_SIZE = 0.4
 const PIPE_SPEED = 0.01
+const PIPE_MARGIN = 0.2
 
-func launchGameFunction(opt GameOptions) func(g *gocui.Gui) error {
+func generateGameFunction(opt GameOptions) func(g *gocui.Gui) error {
 	return func(g *gocui.Gui) error {
 		//var width, height = g.Size()
 
@@ -77,13 +75,15 @@ func launchGameFunction(opt GameOptions) func(g *gocui.Gui) error {
 			//var vWidth, vHeight = v.Size()
 
 			var birds = opt.Birds
-			var pipes = []customMath.Point{{X: 0.5, Y: rand.Float64()*0.5 + 0.25}, {X: 1, Y: rand.Float64()*0.5 + 0.25}}
-
-			ticker := time.NewTicker(100 * time.Millisecond)
+			var pipes = []customMath.Point{randomPipe(0.5), randomPipe(1)}
+			fps := opt.FramesPerSecond
+			ticker := timerFromFps(fps)
 			go func() {
+				totalScore := 0
+				frame := 0
 				for range ticker.C {
 
-					var allDead = true
+					allDead := true
 					g.Update(func(g *gocui.Gui) error {
 						// move pipes
 						for i := range pipes {
@@ -91,9 +91,10 @@ func launchGameFunction(opt GameOptions) func(g *gocui.Gui) error {
 							pipe.X = pipe.X - PIPE_SPEED
 
 							if pipe.X+PIPE_WIDTH <= 0 {
-								pipe.X = 1
+								pipes[i] = randomPipe(1)
 							}
 						}
+						// move birds
 						for i := range birds {
 							bird := &birds[i]
 							if bird.Dead() {
@@ -124,6 +125,7 @@ func launchGameFunction(opt GameOptions) func(g *gocui.Gui) error {
 									}
 								}
 							}
+							bird.IncrementScore(1)
 						}
 
 						v, err := g.View("flappy")
@@ -183,7 +185,12 @@ func launchGameFunction(opt GameOptions) func(g *gocui.Gui) error {
 								birdCount++
 							}
 						}
-						_, err = debugV.Write([]byte(fmt.Sprintf("Birds: %d", birdCount)))
+						topScore := opt.TopScore
+						if totalScore > topScore {
+							topScore = totalScore
+						}
+
+						_, err = debugV.Write([]byte(fmt.Sprintf("Generation: %d | FPS: %d | Birds: %d | Top Score: %d | Score: %d", opt.Generation, int(fps), birdCount, topScore, totalScore)))
 						if err != nil {
 							return err
 						}
@@ -191,16 +198,37 @@ func launchGameFunction(opt GameOptions) func(g *gocui.Gui) error {
 						return nil
 					})
 					// wait for ui updating
-					time.Sleep(50 * time.Millisecond)
+					time.Sleep(100 * time.Microsecond)
 
 					if allDead {
+						g.Update(func(gui *gocui.Gui) error {
+							return gocui.ErrQuit
+						})
 						break
+					}
+					totalScore += 1
+					frame++
+					if frame%50 == 0 {
+						fps += 1
+						ticker.Reset(fpsToDuration(fps))
 					}
 				}
 			}()
 		}
 		return nil
 	}
+}
+
+func timerFromFps(fps float64) *time.Ticker {
+	return time.NewTicker(fpsToDuration(fps))
+}
+
+func fpsToDuration(fps float64) time.Duration {
+	return time.Duration(float64(time.Second) / fps)
+}
+
+func randomPipe(x float64) customMath.Point {
+	return customMath.Point{X: x, Y: rand.Float64()*(1-2*PIPE_MARGIN) + PIPE_MARGIN + PIPE_HOLE_SIZE/2}
 }
 
 // the function draws a block both horizontal and vertical

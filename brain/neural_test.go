@@ -9,7 +9,9 @@ import (
 
 func TestNewNeuralBrain(t *testing.T) {
 	t.Run("Test if neural brain gets constructed correctly", func(t *testing.T) {
-		brain := NewNeuralBrain()
+		brain := NewNeuralBrain(NeuralBrainOptions{
+			nil,
+		})
 		d := brain.DecideOnObservation(agent.Observation{
 			DistanceForward: 0,
 			Position: customMath.Point{
