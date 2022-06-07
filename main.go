@@ -1,3 +1,6 @@
+//
+
+//
 package main
 
 import (
@@ -18,6 +21,4 @@ func main() {
 	cui.LaunchGame(cui.GameOptions{
 		Birds: birds,
 	})
-	block := make(chan interface{})
-	<-block
 }

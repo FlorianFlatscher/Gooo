@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
+    <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0a7b1dd4-ad9e-4b5c-a77f-cad8931e08e3" name="Changes" comment="progress">
+      <change afterPath="$PROJECT_DIR$/brain/neural.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/brain/neural_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gooo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Gooo.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agent/bird.go" beforeDir="false" afterPath="$PROJECT_DIR$/agent/bird.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agent/decision.go" beforeDir="false" afterPath="$PROJECT_DIR$/agent/decision.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/brain/dumb.go" beforeDir="false" afterPath="$PROJECT_DIR$/brain/dumb.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cui/game.go" beforeDir="false" afterPath="$PROJECT_DIR$/cui/game.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/math/point.go" beforeDir="false" afterPath="$PROJECT_DIR$/customMath/point.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,25 +45,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.format.on.save.advertiser.fired&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultGoTemplateProperty": "Go File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.format.on.save.advertiser.fired": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "go.import.settings.migrated": "true",
+    "jdk.selected.JAVA_MODULE": "openjdk-18",
+    "last_opened_file_path": "/home/florian/IdeaProjects/Gooo",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/brain" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Go Test.go test Gooo/brain">
     <configuration name="go build Gooo" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="Gooo" />
       <working_directory value="$PROJECT_DIR$" />
@@ -62,8 +81,33 @@
       <filePath value="$PROJECT_DIR$/main.go" />
       <method v="2" />
     </configuration>
+    <configuration name="TestNewNeuralBrain/Test_if_neural_brain_gets_constructed_correctly in Gooo/brain" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="Gooo" />
+      <working_directory value="$PROJECT_DIR$/brain" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="Gooo/brain" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestNewNeuralBrain\E$/^\QTest_if_neural_brain_gets_constructed_correctly\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go test Gooo/brain" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="Gooo" />
+      <working_directory value="$PROJECT_DIR$/brain" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="Gooo/brain" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Test.go test Gooo/brain" />
+        <item itemvalue="Go Test.TestNewNeuralBrain/Test_if_neural_brain_gets_constructed_correctly in Gooo/brain" />
         <item itemvalue="Go Build.go build Gooo" />
       </list>
     </recent_temporary>
@@ -81,6 +125,9 @@
       <workItem from="1653677966274" duration="2460000" />
       <workItem from="1653900649518" duration="35000" />
       <workItem from="1654427456470" duration="557000" />
+      <workItem from="1654545779581" duration="267000" />
+      <workItem from="1654546061715" duration="199000" />
+      <workItem from="1654546269756" duration="136000" />
     </task>
     <task id="LOCAL-00001" summary="progress">
       <created>1653680412677</created>

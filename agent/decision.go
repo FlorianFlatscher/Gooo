@@ -1,17 +1,17 @@
 package agent
 
-import "Gooo/math"
+import "Gooo/customMath"
 
 type Action int
 
 const (
-	JUMP    = Action(0)
-	NOTHING = Action(1)
+	ActionJump    = Action(0)
+	ActionNothing = Action(1)
 )
 
 type Observation struct {
 	DistanceForward float64
-	Position        math.Point
+	Position        customMath.Point
 	HeightOfHole    float64
 }
 
