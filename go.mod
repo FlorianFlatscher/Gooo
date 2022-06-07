@@ -1,4 +1,4 @@
-module Gooo
+module GeneticAlgorithm
 
 go 1.18
 

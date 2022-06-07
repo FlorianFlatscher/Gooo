@@ -1,7 +1,7 @@
 package decision
 
 import (
-	"Gooo/customMath"
+	"GeneticAlgorithm/customMath"
 	"fmt"
 	"testing"
 )

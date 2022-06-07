@@ -4,23 +4,17 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0a7b1dd4-ad9e-4b5c-a77f-cad8931e08e3" name="Changes" comment="Add neural network">
-      <change afterPath="$PROJECT_DIR$/.idea/watcherTasks.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/doc.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/genetic.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="0a7b1dd4-ad9e-4b5c-a77f-cad8931e08e3" name="Changes" comment="documentation">
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agent/bird.go" beforeDir="false" afterPath="$PROJECT_DIR$/bird/bird.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agent/decision.go" beforeDir="false" afterPath="$PROJECT_DIR$/decision/decision.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/brain/dumb.go" beforeDir="false" afterPath="$PROJECT_DIR$/decision/dumb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/brain/neural.go" beforeDir="false" afterPath="$PROJECT_DIR$/decision/neural.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/brain/neural_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/decision/neural_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cui/game.go" beforeDir="false" afterPath="$PROJECT_DIR$/game/flappybird.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/main.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gooo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/GeneticAlgorithm.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bird/bird.go" beforeDir="false" afterPath="$PROJECT_DIR$/bird/bird.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/decision/decision.go" beforeDir="false" afterPath="$PROJECT_DIR$/decision/decision.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/decision/neural_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/decision/neural_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/genetic.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/genetic.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game/flappybird.go" beforeDir="false" afterPath="$PROJECT_DIR$/game/flappybird.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/genetic.go" beforeDir="false" afterPath="$PROJECT_DIR$/genetic.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +57,7 @@
     "WebServerToolWindowFactoryState": "false",
     "go.import.settings.migrated": "true",
     "jdk.selected.JAVA_MODULE": "openjdk-18",
-    "last_opened_file_path": "/snap/go/current/bin/go",
+    "last_opened_file_path": "/home/florian/IdeaProjects/GeneticAlgorithm",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
@@ -79,8 +73,17 @@
     </key>
   </component>
   <component name="RunManager" selected="Go Build.go build Gooo">
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="GeneticAlgorithm" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="Gooo" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
     <configuration name="go build Gooo" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
-      <module name="Gooo" />
+      <module name="GeneticAlgorithm" />
       <working_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
       <package value="Gooo" />
@@ -89,7 +92,7 @@
       <method v="2" />
     </configuration>
     <configuration name="TestNewNeuralBrain in Gooo/brain" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="Gooo" />
+      <module name="GeneticAlgorithm" />
       <working_directory value="$PROJECT_DIR$/brain" />
       <root_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
@@ -101,7 +104,7 @@
       <method v="2" />
     </configuration>
     <configuration name="TestNewNeuralBrain/Test_if_neural_brain_gets_constructed_correctly in Gooo/brain" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="Gooo" />
+      <module name="GeneticAlgorithm" />
       <working_directory value="$PROJECT_DIR$/brain" />
       <root_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
@@ -112,8 +115,18 @@
       <pattern value="^\QTestNewNeuralBrain\E$/^\QTest_if_neural_brain_gets_constructed_correctly\E$" />
       <method v="2" />
     </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="GeneticAlgorithm" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="DIRECTORY" />
+      <package value="Gooo" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
     <configuration name="go test Gooo/brain" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="Gooo" />
+      <module name="GeneticAlgorithm" />
       <working_directory value="$PROJECT_DIR$/brain" />
       <root_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
@@ -174,7 +187,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="progress" />
     <MESSAGE value="add .gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="add .gitignore" />
+    <MESSAGE value="documentation" />
+    <option name="LAST_COMMIT_MESSAGE" value="documentation" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

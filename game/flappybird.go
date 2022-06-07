@@ -1,8 +1,8 @@
 package game
 
 import (
-	"Gooo/bird"
-	"Gooo/customMath"
+	"GeneticAlgorithm/bird"
+	"GeneticAlgorithm/customMath"
 	"fmt"
 	"github.com/jroimartin/gocui"
 	"log"

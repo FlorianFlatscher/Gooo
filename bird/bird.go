@@ -1,8 +1,8 @@
 package bird
 
 import (
-	"Gooo/customMath"
-	"Gooo/decision"
+	"GeneticAlgorithm/customMath"
+	"GeneticAlgorithm/decision"
 	"math"
 )
 

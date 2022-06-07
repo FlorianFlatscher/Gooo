@@ -1,6 +1,6 @@
 package decision
 
-import "Gooo/customMath"
+import "GeneticAlgorithm/customMath"
 
 type Action int
 

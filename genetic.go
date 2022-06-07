@@ -1,5 +1,5 @@
 // # Genetic Algorithm
-// This genetic algorithm trains FlappyBird agents to play FlappyBird. The learning phase is visualized using CUI, a packet for creating a CLI. The neural network of the agents is implemented using the gonum matrix library.
+// This genetic algorithm trains FlappyBird AI agents to play FlappyBird. The learning phase is visualized using CUI, a packet for creating a CLI. The neural network of the agents is implemented using the gonum matrix library.
 
 // ## Idea
 // 1. The population, consisting of 30 birds, play FlappyBirds.
@@ -11,9 +11,9 @@
 package main
 
 import (
-	"Gooo/bird"     // covers the birds mechanics
-	"Gooo/decision" // covers deciding on certain action based on observation
-	"Gooo/game"     // covers the FlappyBird game, including CLI visualisation
+	"GeneticAlgorithm/bird"     // covers the birds mechanics
+	"GeneticAlgorithm/decision" // covers deciding on certain action based on observation
+	"GeneticAlgorithm/game"     // covers the FlappyBird game, including CLI visualisation
 	"math"
 	"math/rand"
 )
@@ -105,10 +105,10 @@ func Evolve(birds []bird.Bird, mutation float64) []bird.Bird {
 		// k is the cross-over coefficient that describes if the child should inherit more from a (k <= 0.5) or from b (k > 0.5).
 		var k float64
 		if a.Score() > b.Score() {
-			k = 0.6
+			k = 0.9
 		}
 		if b.Score() > a.Score() {
-			k = 0.4
+			k = 0.1
 		}
 		// The child's brain is generated.
 		brainC := decision.CrossOver(brainA, brainB, k)
