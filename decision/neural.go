@@ -1,7 +1,6 @@
-package brain
+package decision
 
 import (
-	"Gooo/agent"
 	"fmt"
 	"gonum.org/v1/gonum/mat"
 	"math"
@@ -10,13 +9,18 @@ import (
 
 const Layers = 3
 
-// NeuralBrain is an implementation of the agent.DecisionEngine interface.
+const Input = 3
+const Layer1 = 3
+const Layer2 = 3
+const Layer3 = 2
+
+// NeuralBrain is an implementation of the bird.DecisionEngine interface.
 // It uses a neural network to decide based on certain observation.
 type NeuralBrain struct {
 	weights [Layers]*mat.Dense
 }
 
-func (n *NeuralBrain) DecideOnObservation(obs agent.Observation) agent.Action {
+func (nb *NeuralBrain) DecideOnObservation(obs Observation) Action {
 	input := mat.NewDense(3, 1, []float64{
 		obs.DistanceForward,
 		obs.HeightOfHole,
@@ -24,7 +28,7 @@ func (n *NeuralBrain) DecideOnObservation(obs agent.Observation) agent.Action {
 	})
 
 	curr := input
-	for _, layer := range n.weights {
+	for _, layer := range nb.weights {
 		// Prepare layer output
 		layerRows, _ := layer.Dims()
 		nextCurr := mat.NewDense(layerRows, 1, nil)
@@ -43,13 +47,13 @@ func (n *NeuralBrain) DecideOnObservation(obs agent.Observation) agent.Action {
 	resNothing := curr.At(0, 0)
 	resJump := curr.At(1, 0)
 	if resJump > resNothing {
-		return agent.ActionJump
+		return ActionJump
 	}
-	return agent.ActionNothing
+	return ActionNothing
 }
 
-func (n *NeuralBrain) DecideOnEvent(obs agent.Observation) agent.Action {
-	return agent.ActionNothing
+func (nb *NeuralBrain) DecideOnEvent(obs Observation) Action {
+	return ActionNothing
 }
 
 // CrossOver constructs a new NeuralBrain that uses k*100% weights of a, and (1-k)*100% weights of b, where k is between 0 and 1
@@ -60,7 +64,7 @@ func CrossOver(a *NeuralBrain, b *NeuralBrain, k float64) *NeuralBrain {
 
 	// Parents
 	weightsA := a.Weights()
-	weightsB := a.Weights()
+	weightsB := b.Weights()
 
 	// Child
 	weightsC := [3]*mat.Dense{}
@@ -75,15 +79,15 @@ func CrossOver(a *NeuralBrain, b *NeuralBrain, k float64) *NeuralBrain {
 		}, weightsC[index])
 	}
 
-	return NewNeuralBrain(NeuralBrainOptions{
+	return NewNeuralBrainO(NeuralBrainOptions{
 		InitialWeights: &weightsC,
 	})
 }
 
 // Mutate tweaks n weights of the NeuralBrain by a random number between m and -m
-func (a *NeuralBrain) Mutate(n int, m float64) {
+func (nb *NeuralBrain) Mutate(n int, m float64) {
 	for nth := 0; nth < n; nth++ {
-		layer := a.weights[rand.Intn(len(a.weights))]
+		layer := nb.weights[rand.Intn(len(nb.weights))]
 		rows, cols := layer.Dims()
 		r, c := rand.Intn(rows), rand.Intn(cols)
 		oldV := layer.At(r, c)
@@ -93,13 +97,13 @@ func (a *NeuralBrain) Mutate(n int, m float64) {
 	}
 }
 
-func (n *NeuralBrain) Weights() [Layers]*mat.Dense {
-	return n.weights
+func (nb *NeuralBrain) Weights() [Layers]*mat.Dense {
+	return nb.weights
 }
 
-func (n *NeuralBrain) Print() {
-	for i := range n.weights {
-		fmt.Println(n.weights[i])
+func (nb *NeuralBrain) Print() {
+	for i := range nb.weights {
+		fmt.Println(nb.weights[i])
 	}
 }
 
@@ -107,20 +111,27 @@ type NeuralBrainOptions struct {
 	InitialWeights *[Layers]*mat.Dense // if nil, the weights will be initialized with random values between 0 and 1
 }
 
-func NewNeuralBrain(options NeuralBrainOptions) *NeuralBrain {
+func NewNeuralBrainO(options NeuralBrainOptions) *NeuralBrain {
 	var weights [Layers]*mat.Dense
 
 	if options.InitialWeights == nil {
+		// +1 for bias
 		weights = [Layers]*mat.Dense{
-			newDenseWithRandomValues(5, 4),
-			newDenseWithRandomValues(4, 6),
-			newDenseWithRandomValues(2, 5),
+			newDenseWithRandomValues(Layer1, Input+1),
+			newDenseWithRandomValues(Layer2, Layer1+1),
+			newDenseWithRandomValues(Layer3, Layer2+1),
 		}
 	} else {
 		weights = *options.InitialWeights
 	}
 
 	return &NeuralBrain{weights}
+}
+
+func NewNeuralBrain() *NeuralBrain {
+	return NewNeuralBrainO(NeuralBrainOptions{
+		InitialWeights: nil,
+	})
 }
 
 func newDenseWithRandomValues(r int, c int) *mat.Dense {

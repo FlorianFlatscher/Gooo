@@ -1,29 +1,29 @@
-package agent
+package bird
 
 import (
 	"Gooo/customMath"
+	"Gooo/decision"
 	"math"
 )
 
 type Bird struct {
-	score    float64
-	position customMath.Point
-	velocity float64
-	brain    DecisionEngine
-	dead     bool
+	score          float64
+	position       customMath.Point
+	velocity       float64
+	decisionEngine decision.DecisionEngine
+	dead           bool
 }
 
 func (b *Bird) DoSomething(distanceForward float64, heightOfHole float64) {
-	var observation = Observation{
+	var observation = decision.Observation{
 		DistanceForward: distanceForward,
 		Position:        b.position,
 		HeightOfHole:    heightOfHole,
 	}
-
-	var action = b.brain.DecideOnObservation(observation)
+	var action = b.decisionEngine.DecideOnObservation(observation)
 
 	switch action {
-	case ActionJump:
+	case decision.ActionJump:
 		b.velocity = -0.06
 	}
 }
@@ -41,10 +41,14 @@ func (b *Bird) DoPhysics() {
 	}
 }
 
+type Options struct {
+	DecisionEngine decision.DecisionEngine
+}
+
 // Constructor
 
-func NewBird(brain DecisionEngine) *Bird {
-	return &Bird{brain: brain, position: customMath.Point{X: 0.25, Y: 0.5}}
+func NewBird(o Options) *Bird {
+	return &Bird{decisionEngine: o.DecisionEngine, position: customMath.Point{X: 0.25, Y: 0.5}}
 }
 
 // Setter & Getter
@@ -77,12 +81,12 @@ func (b *Bird) IncrementScore(by float64) {
 	b.score += by
 }
 
-func (b *Bird) Brain() DecisionEngine {
-	return b.brain
+func (b *Bird) DecisionEngine() decision.DecisionEngine {
+	return b.decisionEngine
 }
 
-func (b *Bird) SetBrain(brain DecisionEngine) {
-	b.brain = brain
+func (b *Bird) SetDecisionEngine(brain decision.DecisionEngine) {
+	b.decisionEngine = brain
 }
 
 func (b *Bird) Dead() bool {
@@ -93,7 +97,9 @@ func (b *Bird) SetDead(dead bool) {
 	b.dead = dead
 }
 
-// Revives the bird by reseting
+// Revive clones the bird
 func (b *Bird) Revive() Bird {
-	return *NewBird(b.brain)
+	return *NewBird(Options{
+		DecisionEngine: b.decisionEngine,
+	})
 }

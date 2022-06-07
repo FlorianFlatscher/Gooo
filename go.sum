@@ -4,7 +4,11 @@ github.com/kyokomi/emoji/v2 v2.2.9 h1:UWYkjplPZ4rMPvLxc+/e12/xTqoRcn55oUySkpZ554
 github.com/kyokomi/emoji/v2 v2.2.9/go.mod h1:JUcn42DTdsXJo1SWanHh4HKDEyPaR5CqkmoirZZP9qE=
 github.com/mattn/go-runewidth v0.0.9 h1:Lm995f3rfxdpd6TSmuVCHVb/QhupuXlYr8sCI/QdE+0=
 github.com/mattn/go-runewidth v0.0.9/go.mod h1:H031xJmbD/WCDINGzjvQ9THkh0rPKHF+m2gUSrubnMI=
+github.com/nikhilm/gocco v0.0.0-20120406065426-84d2aea39070 h1:SNS073UBHt4bNfkrlqdwb7j/m4Nw13L2GYD8twJn6tc=
+github.com/nikhilm/gocco v0.0.0-20120406065426-84d2aea39070/go.mod h1:mkS7uyvWaMapPDrUsq96p/zFsh88Iblu6eWO+qt0Zv0=
 github.com/nsf/termbox-go v1.1.1 h1:nksUPLCb73Q++DwbYUBEglYBRPZyoXJdrj5L+TkjyZY=
 github.com/nsf/termbox-go v1.1.1/go.mod h1:T0cTdVuOwf7pHQNtfhnEbzHbcNyCEcVU4YPpouCbVxo=
+github.com/russross/blackfriday v1.6.0 h1:KqfZb0pUVN2lYqZUYRddxF4OR8ZMURnJIG5Y3VRLtww=
+github.com/russross/blackfriday v1.6.0/go.mod h1:ti0ldHuxg49ri4ksnFxlkCfN+hvslNlmVHqNRXXJNAY=
 gonum.org/v1/gonum v0.11.0 h1:f1IJhK4Km5tBJmaiJXtk/PkL4cdVX6J+tGiM187uT5E=
 gonum.org/v1/gonum v0.11.0/go.mod h1:fSG4YDCxxUZQJ7rKsQrj0gMOg00Il0Z96/qMA4bVQhA=

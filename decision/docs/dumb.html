@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>dumb.go</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="gocco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <table cellpadding="0" cellspacing="0">
+      <thead>
+        <tr>
+          <th class="docs">
+            <h1>
+                dumb.go
+            </h1>
+          </th>
+          <th class="code">
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+          
+          <tr id="section-1">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+                
+            </td>
+            <td class="code">
+                <div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">decision</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&quot;math/rand&quot;</span>
+<span class="p">)</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-2">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+                <p>DumbBrain is an implementation of the bird.DecisionEngine interface.
+It ignores all observations and events and chooses random action. This implementation is used for testing purposes.</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre><span class="kd">type</span> <span class="nx">DumbBrain</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nx">NewDumbBrain</span><span class="p">()</span> <span class="nx">DumbBrain</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">DumbBrain</span><span class="p">{}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">d</span> <span class="o">*</span><span class="nx">DumbBrain</span><span class="p">)</span> <span class="nx">DecideOnObservation</span><span class="p">(</span><span class="nx">obs</span> <span class="nx">Observation</span><span class="p">)</span> <span class="nx">Action</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="nx">rand</span><span class="p">.</span><span class="nx">Float32</span><span class="p">()</span> <span class="p">&gt;</span> <span class="mf">0.90</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">ActionJump</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">ActionNothing</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">d</span> <span class="o">*</span><span class="nx">DumbBrain</span><span class="p">)</span> <span class="nx">DecideOnEvent</span><span class="p">(</span><span class="nx">obs</span> <span class="nx">Observation</span><span class="p">)</span> <span class="nx">Action</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="nx">rand</span><span class="p">.</span><span class="nx">Float32</span><span class="p">()</span> <span class="p">&gt;</span> <span class="mf">0.96</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="nx">ActionJump</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">ActionNothing</span>
+<span class="p">}</span>
+
+</pre></div>
+            </td>
+          </tr>
+          
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

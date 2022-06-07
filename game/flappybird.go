@@ -1,7 +1,7 @@
-package cui
+package game
 
 import (
-	"Gooo/agent"
+	"Gooo/bird"
 	"Gooo/customMath"
 	"fmt"
 	"github.com/jroimartin/gocui"
@@ -10,14 +10,14 @@ import (
 	"time"
 )
 
-type GameOptions struct {
-	Birds           []agent.Bird
+type Options struct {
+	Birds           []bird.Bird
 	Generation      int
 	TopScore        int
 	FramesPerSecond float64
 }
 
-func LaunchGame(opt GameOptions) error {
+func FlappyBirdWithCui(opt Options) error {
 
 	g, err := gocui.NewGui(gocui.OutputNormal)
 	if err != nil {
@@ -53,7 +53,7 @@ const PIPE_HOLE_SIZE = 0.4
 const PIPE_SPEED = 0.01
 const PIPE_MARGIN = 0.2
 
-func generateGameFunction(opt GameOptions) func(g *gocui.Gui) error {
+func generateGameFunction(opt Options) func(g *gocui.Gui) error {
 	return func(g *gocui.Gui) error {
 		//var width, height = g.Size()
 
@@ -137,8 +137,8 @@ func generateGameFunction(opt GameOptions) func(g *gocui.Gui) error {
 
 						// Drawing pipes
 						for _, pipe := range pipes {
-							err := drawBlock(pipe.X, pipe.X+PIPE_WIDTH, pipe.Y, 1, v)
-							err = drawBlock(pipe.X, pipe.X+PIPE_WIDTH, 0, pipe.Y-PIPE_HOLE_SIZE, v)
+							err := drawBlock(pipe.X, pipe.X+PIPE_WIDTH, pipe.Y+1/float64(height), 1, v)
+							err = drawBlock(pipe.X, pipe.X+PIPE_WIDTH, 0, pipe.Y-PIPE_HOLE_SIZE+1/float64(height), v)
 							if err != nil {
 								return err
 							}

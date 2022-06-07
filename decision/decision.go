@@ -1,4 +1,4 @@
-package agent
+package decision
 
 import "Gooo/customMath"
 

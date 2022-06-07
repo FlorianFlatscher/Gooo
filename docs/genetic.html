@@ -1,0 +1,438 @@
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>genetic.go</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="gocco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <table cellpadding="0" cellspacing="0">
+      <thead>
+        <tr>
+          <th class="docs">
+            <h1>
+                genetic.go
+            </h1>
+          </th>
+          <th class="code">
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+          
+          <tr id="section-1">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+                <h1>Genetic Algorithm</h1>
+
+<p>This genetic algorithm trains FlappyBird agents to play FlappyBird. The learning phase is visualized using CUI, a packet for creating a CLI. The neural network of the agents is implemented using the gonum matrix library.</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre><span></span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-2">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+                <h2>Idea</h2>
+
+<ol>
+<li>The population, consisting of 30 birds, play FlappyBirds.</li>
+<li>Each bird based on how long it was able to survive.</li>
+<li>The best ones are elected to be the base of the new population.</li>
+<li>The cycle repeats with the new population</li>
+</ol>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-3">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+                
+            </td>
+            <td class="code">
+                <div class="highlight"><pre><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&quot;Gooo/bird&quot;</span>     <span class="c1">// covers the birds mechanics</span>
+	<span class="s">&quot;Gooo/decision&quot;</span> <span class="c1">// covers deciding on certain action based on observation</span>
+	<span class="s">&quot;Gooo/game&quot;</span>     <span class="c1">// covers the FlappyBird game, including CLI visualisation</span>
+	<span class="s">&quot;math&quot;</span>
+	<span class="s">&quot;math/rand&quot;</span>
+<span class="p">)</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-4">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+                <p>Each game is played by 30 birds at the same time.</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre><span class="kd">const</span> <span class="nx">populationSize</span> <span class="p">=</span> <span class="mi">30</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-5">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+                <h2>Algorithm</h2>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre><span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-6">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+                <p>The first generation&rsquo;s population consists of birds that are not trained yet.</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre>	<span class="nx">population</span> <span class="o">:=</span> <span class="nx">BuildPopulation</span><span class="p">()</span>
+	<span class="nx">topScore</span> <span class="o">:=</span> <span class="mf">0.0</span>
+
+	<span class="k">for</span> <span class="nx">generation</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="kc">true</span><span class="p">;</span> <span class="nx">generation</span><span class="o">++</span> <span class="p">{</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-7">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+                <p>FlappyBirdWithCui sets up a CLI FlappyBird game, with the bird agents as players. The game is over when al birds are dead. For details on the implementation see <a href="../game/docs/flappybird.html">game/flappybird.go</a>.</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre>		<span class="nx">game</span><span class="p">.</span><span class="nx">FlappyBirdWithCui</span><span class="p">(</span><span class="nx">game</span><span class="p">.</span><span class="nx">Options</span><span class="p">{</span>
+			<span class="nx">Birds</span><span class="p">:</span>           <span class="nx">population</span><span class="p">,</span>
+			<span class="nx">Generation</span><span class="p">:</span>      <span class="nx">generation</span><span class="p">,</span>
+			<span class="nx">TopScore</span><span class="p">:</span>        <span class="nb">int</span><span class="p">(</span><span class="nx">topScore</span><span class="p">),</span>
+			<span class="nx">FramesPerSecond</span><span class="p">:</span> <span class="nb">float64</span><span class="p">(</span><span class="nx">generation</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span><span class="o">*</span><span class="mi">20</span> <span class="o">+</span> <span class="mi">30</span><span class="p">,</span>
+		<span class="p">})</span>
+
+		<span class="nx">bestBird</span> <span class="o">:=</span> <span class="nx">CalculateBestBird</span><span class="p">(</span><span class="nx">population</span><span class="p">)</span>
+		<span class="k">if</span> <span class="nx">bestBird</span><span class="p">.</span><span class="nx">Score</span><span class="p">()</span> <span class="p">&gt;</span> <span class="nx">topScore</span> <span class="p">{</span>
+			<span class="nx">topScore</span> <span class="p">=</span> <span class="nx">bestBird</span><span class="p">.</span><span class="nx">Score</span><span class="p">()</span>
+		<span class="p">}</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-8">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+                <p>The mutation rate describes random modifications to the new generation. If it is higher, one could say the new generation is exploring new approaches. In this implementation, the mutation rate is decreasing, as the top score of the birds is increasing.</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre>		<span class="nx">mutation</span> <span class="o">:=</span> <span class="nx">math</span><span class="p">.</span><span class="nx">Max</span><span class="p">(</span><span class="mf">0.5</span><span class="o">-</span><span class="mf">0.0001</span><span class="o">*</span><span class="nb">float64</span><span class="p">(</span><span class="nx">topScore</span><span class="p">),</span> <span class="mf">0.001</span><span class="p">)</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-9">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+                <p>The new population is build through evolution. This marks the start of a new generation.</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre>		<span class="nx">population</span> <span class="p">=</span> <span class="nx">Evolve</span><span class="p">(</span><span class="nx">population</span><span class="p">,</span> <span class="nx">mutation</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-10">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+                <h2>Birds</h2>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-11">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+                <p>BuildPopulation builds a new population of birds with a neural network as decision engine. For more details on the implementation see <a href="../decision/docs/neural.html">decision/neural.go</a>.</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre><span class="kd">func</span> <span class="nx">BuildPopulation</span><span class="p">()</span> <span class="p">[]</span><span class="nx">bird</span><span class="p">.</span><span class="nx">Bird</span> <span class="p">{</span>
+	<span class="nx">birds</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="nx">bird</span><span class="p">.</span><span class="nx">Bird</span><span class="p">,</span> <span class="nx">populationSize</span><span class="p">)</span>
+	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nb">cap</span><span class="p">(</span><span class="nx">birds</span><span class="p">);</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="nx">birds</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="o">*</span><span class="nx">bird</span><span class="p">.</span><span class="nx">NewBird</span><span class="p">(</span><span class="nx">bird</span><span class="p">.</span><span class="nx">Options</span><span class="p">{</span>
+			<span class="nx">DecisionEngine</span><span class="p">:</span> <span class="nx">decision</span><span class="p">.</span><span class="nx">NewNeuralBrain</span><span class="p">(),</span>
+		<span class="p">})</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">birds</span>
+<span class="p">}</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-12">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+                <p>CalculateSummedScore calculates the score for the entire population together.</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre><span class="kd">func</span> <span class="nx">CalculateSummedScore</span><span class="p">(</span><span class="nx">birds</span> <span class="p">[]</span><span class="nx">bird</span><span class="p">.</span><span class="nx">Bird</span><span class="p">)</span> <span class="kt">float64</span> <span class="p">{</span>
+	<span class="nx">summedScore</span> <span class="o">:=</span> <span class="mf">0.0</span>
+	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">birds</span><span class="p">);</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="nx">summedScore</span> <span class="o">+=</span> <span class="nx">birds</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">Score</span><span class="p">()</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">summedScore</span>
+<span class="p">}</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-13">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+                <p>CalculateBestBird calculates the best scoring bird of the population.</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre><span class="kd">func</span> <span class="nx">CalculateBestBird</span><span class="p">(</span><span class="nx">birds</span> <span class="p">[]</span><span class="nx">bird</span><span class="p">.</span><span class="nx">Bird</span><span class="p">)</span> <span class="nx">bird</span><span class="p">.</span><span class="nx">Bird</span> <span class="p">{</span>
+	<span class="nx">bestBird</span> <span class="o">:=</span> <span class="nx">birds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">birds</span><span class="p">);</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="nx">birds</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">Score</span><span class="p">()</span> <span class="p">&gt;</span> <span class="nx">bestBird</span><span class="p">.</span><span class="nx">Score</span><span class="p">()</span> <span class="p">{</span>
+			<span class="nx">bestBird</span> <span class="p">=</span> <span class="nx">birds</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">bestBird</span>
+<span class="p">}</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-14">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+                <h2>Evolution</h2>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-15">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+                <p>Evolve builds the next generation&rsquo;s population, by reproducing and mutating the best scoring birds of the last generation.</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre><span class="kd">func</span> <span class="nx">Evolve</span><span class="p">(</span><span class="nx">birds</span> <span class="p">[]</span><span class="nx">bird</span><span class="p">.</span><span class="nx">Bird</span><span class="p">,</span> <span class="nx">mutation</span> <span class="kt">float64</span><span class="p">)</span> <span class="p">[]</span><span class="nx">bird</span><span class="p">.</span><span class="nx">Bird</span> <span class="p">{</span>
+	<span class="nx">summedScore</span> <span class="o">:=</span> <span class="nx">CalculateSummedScore</span><span class="p">(</span><span class="nx">birds</span><span class="p">)</span>
+	<span class="nx">bestBird</span> <span class="o">:=</span> <span class="nx">CalculateBestBird</span><span class="p">(</span><span class="nx">birds</span><span class="p">)</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-16">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+                <p>A population with the same size is initialized.</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre>	<span class="kd">var</span> <span class="nx">children</span> <span class="p">=</span> <span class="nb">make</span><span class="p">([]</span><span class="nx">bird</span><span class="p">.</span><span class="nx">Bird</span><span class="p">,</span> <span class="nx">populationSize</span><span class="p">)</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-17">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+                <p>The best scoring bird is revived and reused.</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre>	<span class="nx">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">=</span> <span class="nx">bestBird</span><span class="p">.</span><span class="nx">Revive</span><span class="p">()</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-18">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+                <p>All other birds are &ldquo;born by natural election&rdquo;.</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre>	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nb">cap</span><span class="p">(</span><span class="nx">children</span><span class="p">);</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-19">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+                <p>Two parents are elected by random. Better scoring birds are more likely to be elected.</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre>		<span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="o">:=</span> <span class="nx">ElectBothParents</span><span class="p">(</span><span class="nx">birds</span><span class="p">,</span> <span class="nx">summedScore</span><span class="p">)</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-20">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+                <p>Taking the parent&rsquo;s brains (the neural networks).</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre>		<span class="nx">brainA</span><span class="p">,</span> <span class="nx">brainB</span> <span class="o">:=</span> <span class="nx">a</span><span class="p">.</span><span class="nx">DecisionEngine</span><span class="p">().(</span><span class="o">*</span><span class="nx">decision</span><span class="p">.</span><span class="nx">NeuralBrain</span><span class="p">),</span> <span class="nx">b</span><span class="p">.</span><span class="nx">DecisionEngine</span><span class="p">().(</span><span class="o">*</span><span class="nx">decision</span><span class="p">.</span><span class="nx">NeuralBrain</span><span class="p">)</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-21">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+                <p>k is the cross-over coefficient that describes if the child should inherit more from a (k &lt;= 0.5) or from b (k &gt; 0.5).</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre>		<span class="kd">var</span> <span class="nx">k</span> <span class="kt">float64</span>
+		<span class="k">if</span> <span class="nx">a</span><span class="p">.</span><span class="nx">Score</span><span class="p">()</span> <span class="p">&gt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">Score</span><span class="p">()</span> <span class="p">{</span>
+			<span class="nx">k</span> <span class="p">=</span> <span class="mf">0.6</span>
+		<span class="p">}</span>
+		<span class="k">if</span> <span class="nx">b</span><span class="p">.</span><span class="nx">Score</span><span class="p">()</span> <span class="p">&gt;</span> <span class="nx">a</span><span class="p">.</span><span class="nx">Score</span><span class="p">()</span> <span class="p">{</span>
+			<span class="nx">k</span> <span class="p">=</span> <span class="mf">0.4</span>
+		<span class="p">}</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-22">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+                <p>The child&rsquo;s brain is generated.</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre>		<span class="nx">brainC</span> <span class="o">:=</span> <span class="nx">decision</span><span class="p">.</span><span class="nx">CrossOver</span><span class="p">(</span><span class="nx">brainA</span><span class="p">,</span> <span class="nx">brainB</span><span class="p">,</span> <span class="nx">k</span><span class="p">)</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-23">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+                <p>5 weights of the neural network are modified by the mutation rate given as parameter.</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre>		<span class="nx">brainC</span><span class="p">.</span><span class="nx">Mutate</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="nx">mutation</span><span class="p">)</span>
+		<span class="nx">children</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="o">*</span><span class="nx">bird</span><span class="p">.</span><span class="nx">NewBird</span><span class="p">(</span><span class="nx">bird</span><span class="p">.</span><span class="nx">Options</span><span class="p">{</span>
+			<span class="nx">DecisionEngine</span><span class="p">:</span> <span class="nx">brainC</span><span class="p">,</span>
+		<span class="p">})</span>
+	<span class="p">}</span>
+
+	<span class="k">return</span> <span class="nx">children</span>
+<span class="p">}</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-24">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+                <p>ElectBothParents elects two parents</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre><span class="kd">func</span> <span class="nx">ElectBothParents</span><span class="p">(</span><span class="nx">birds</span> <span class="p">[]</span><span class="nx">bird</span><span class="p">.</span><span class="nx">Bird</span><span class="p">,</span> <span class="nx">totalScore</span> <span class="kt">float64</span><span class="p">)</span> <span class="p">(</span><span class="nx">bird</span><span class="p">.</span><span class="nx">Bird</span><span class="p">,</span> <span class="nx">bird</span><span class="p">.</span><span class="nx">Bird</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">ElectOneParent</span><span class="p">(</span><span class="nx">birds</span><span class="p">,</span> <span class="nx">totalScore</span><span class="p">),</span> <span class="nx">ElectOneParent</span><span class="p">(</span><span class="nx">birds</span><span class="p">,</span> <span class="nx">totalScore</span><span class="p">)</span>
+<span class="p">}</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-25">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+                <p>ElectOneParent elects a parent. Higher scoring birds are more likely to be elected.</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre><span class="kd">func</span> <span class="nx">ElectOneParent</span><span class="p">(</span><span class="nx">birds</span> <span class="p">[]</span><span class="nx">bird</span><span class="p">.</span><span class="nx">Bird</span><span class="p">,</span> <span class="nx">totalScore</span> <span class="kt">float64</span><span class="p">)</span> <span class="nx">bird</span><span class="p">.</span><span class="nx">Bird</span> <span class="p">{</span>
+	<span class="nx">pivot</span> <span class="o">:=</span> <span class="nx">rand</span><span class="p">.</span><span class="nx">Float64</span><span class="p">()</span> <span class="o">*</span> <span class="nx">totalScore</span>
+	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">birds</span> <span class="p">{</span>
+		<span class="nx">pivot</span> <span class="o">-=</span> <span class="nx">birds</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">Score</span><span class="p">()</span>
+		<span class="k">if</span> <span class="nx">pivot</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="nx">birds</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="nx">birds</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="nx">birds</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="p">}</span>
+
+</pre></div>
+            </td>
+          </tr>
+          
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

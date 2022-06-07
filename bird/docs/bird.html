@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>bird.go</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="gocco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <table cellpadding="0" cellspacing="0">
+      <thead>
+        <tr>
+          <th class="docs">
+            <h1>
+                bird.go
+            </h1>
+          </th>
+          <th class="code">
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+          
+          <tr id="section-1">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+                
+            </td>
+            <td class="code">
+                <div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">bird</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&quot;Gooo/customMath&quot;</span>
+	<span class="s">&quot;Gooo/decision&quot;</span>
+	<span class="s">&quot;math&quot;</span>
+<span class="p">)</span>
+
+<span class="kd">type</span> <span class="nx">Bird</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">score</span>          <span class="kt">float64</span>
+	<span class="nx">position</span>       <span class="nx">customMath</span><span class="p">.</span><span class="nx">Point</span>
+	<span class="nx">velocity</span>       <span class="kt">float64</span>
+	<span class="nx">decisionEngine</span> <span class="nx">decision</span><span class="p">.</span><span class="nx">DecisionEngine</span>
+	<span class="nx">dead</span>           <span class="kt">bool</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Bird</span><span class="p">)</span> <span class="nx">DoSomething</span><span class="p">(</span><span class="nx">distanceForward</span> <span class="kt">float64</span><span class="p">,</span> <span class="nx">heightOfHole</span> <span class="kt">float64</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">observation</span> <span class="p">=</span> <span class="nx">decision</span><span class="p">.</span><span class="nx">Observation</span><span class="p">{</span>
+		<span class="nx">DistanceForward</span><span class="p">:</span> <span class="nx">distanceForward</span><span class="p">,</span>
+		<span class="nx">Position</span><span class="p">:</span>        <span class="nx">b</span><span class="p">.</span><span class="nx">position</span><span class="p">,</span>
+		<span class="nx">HeightOfHole</span><span class="p">:</span>    <span class="nx">heightOfHole</span><span class="p">,</span>
+	<span class="p">}</span>
+	<span class="kd">var</span> <span class="nx">action</span> <span class="p">=</span> <span class="nx">b</span><span class="p">.</span><span class="nx">decisionEngine</span><span class="p">.</span><span class="nx">DecideOnObservation</span><span class="p">(</span><span class="nx">observation</span><span class="p">)</span>
+
+	<span class="k">switch</span> <span class="nx">action</span> <span class="p">{</span>
+	<span class="k">case</span> <span class="nx">decision</span><span class="p">.</span><span class="nx">ActionJump</span><span class="p">:</span>
+		<span class="nx">b</span><span class="p">.</span><span class="nx">velocity</span> <span class="p">=</span> <span class="o">-</span><span class="mf">0.06</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Bird</span><span class="p">)</span> <span class="nx">DoPhysics</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="nx">b</span><span class="p">.</span><span class="nx">velocity</span> <span class="p">&lt;</span> <span class="mi">0</span> <span class="p">{</span>
+		<span class="nx">b</span><span class="p">.</span><span class="nx">velocity</span> <span class="o">+=</span> <span class="mf">0.01</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="nx">math</span><span class="p">.</span><span class="nx">Abs</span><span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">velocity</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">0.01</span> <span class="p">{</span>
+		<span class="nx">b</span><span class="p">.</span><span class="nx">velocity</span> <span class="p">=</span> <span class="mi">0</span>
+	<span class="p">}</span>
+	<span class="nx">b</span><span class="p">.</span><span class="nx">position</span> <span class="p">=</span> <span class="nx">customMath</span><span class="p">.</span><span class="nx">Point</span><span class="p">{</span>
+		<span class="nx">Y</span><span class="p">:</span> <span class="nx">b</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">Y</span> <span class="o">+</span> <span class="mf">0.02</span> <span class="o">+</span> <span class="nx">b</span><span class="p">.</span><span class="nx">velocity</span><span class="p">,</span>
+		<span class="nx">X</span><span class="p">:</span> <span class="nx">b</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">X</span><span class="p">,</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">BirdOptions</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">decisionEngine</span> <span class="nx">decision</span><span class="p">.</span><span class="nx">DecisionEngine</span>
+<span class="p">}</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-2">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+                <p>Constructor</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre><span class="kd">func</span> <span class="nx">NewBird</span><span class="p">(</span><span class="nx">o</span> <span class="nx">BirdOptions</span><span class="p">)</span> <span class="o">*</span><span class="nx">Bird</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">Bird</span><span class="p">{</span><span class="nx">decisionEngine</span><span class="p">:</span> <span class="nx">o</span><span class="p">.</span><span class="nx">decisionEngine</span><span class="p">,</span> <span class="nx">position</span><span class="p">:</span> <span class="nx">customMath</span><span class="p">.</span><span class="nx">Point</span><span class="p">{</span><span class="nx">X</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span> <span class="nx">Y</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">}}</span>
+<span class="p">}</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-3">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+                <p>Setter &amp; Getter</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre><span class="kd">func</span> <span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Bird</span><span class="p">)</span> <span class="nx">Velocity</span><span class="p">()</span> <span class="kt">float64</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">b</span><span class="p">.</span><span class="nx">velocity</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Bird</span><span class="p">)</span> <span class="nx">SetVelocity</span><span class="p">(</span><span class="nx">velocity</span> <span class="kt">float64</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">b</span><span class="p">.</span><span class="nx">velocity</span> <span class="p">=</span> <span class="nx">velocity</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Bird</span><span class="p">)</span> <span class="nx">Position</span><span class="p">()</span> <span class="nx">customMath</span><span class="p">.</span><span class="nx">Point</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">b</span><span class="p">.</span><span class="nx">position</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Bird</span><span class="p">)</span> <span class="nx">SetPosition</span><span class="p">(</span><span class="nx">position</span> <span class="nx">customMath</span><span class="p">.</span><span class="nx">Point</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">b</span><span class="p">.</span><span class="nx">position</span> <span class="p">=</span> <span class="nx">position</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Bird</span><span class="p">)</span> <span class="nx">Score</span><span class="p">()</span> <span class="kt">float64</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">b</span><span class="p">.</span><span class="nx">score</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Bird</span><span class="p">)</span> <span class="nx">SetScore</span><span class="p">(</span><span class="nx">score</span> <span class="kt">float64</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">b</span><span class="p">.</span><span class="nx">score</span> <span class="p">=</span> <span class="nx">score</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Bird</span><span class="p">)</span> <span class="nx">IncrementScore</span><span class="p">(</span><span class="nx">by</span> <span class="kt">float64</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">b</span><span class="p">.</span><span class="nx">score</span> <span class="o">+=</span> <span class="nx">by</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Bird</span><span class="p">)</span> <span class="nx">Brain</span><span class="p">()</span> <span class="nx">decision</span><span class="p">.</span><span class="nx">DecisionEngine</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">b</span><span class="p">.</span><span class="nx">decisionEngine</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Bird</span><span class="p">)</span> <span class="nx">SetBrain</span><span class="p">(</span><span class="nx">brain</span> <span class="nx">decision</span><span class="p">.</span><span class="nx">DecisionEngine</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">b</span><span class="p">.</span><span class="nx">decisionEngine</span> <span class="p">=</span> <span class="nx">brain</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Bird</span><span class="p">)</span> <span class="nx">Dead</span><span class="p">()</span> <span class="kt">bool</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">b</span><span class="p">.</span><span class="nx">dead</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Bird</span><span class="p">)</span> <span class="nx">SetDead</span><span class="p">(</span><span class="nx">dead</span> <span class="kt">bool</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">b</span><span class="p">.</span><span class="nx">dead</span> <span class="p">=</span> <span class="nx">dead</span>
+<span class="p">}</span></pre></div>
+            </td>
+          </tr>
+          
+          <tr id="section-4">
+            <td class="docs">
+              <div class="pilwrap">
+                  <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+                <p>Revive clones the bird</p>
+
+            </td>
+            <td class="code">
+                <div class="highlight"><pre><span class="kd">func</span> <span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">Bird</span><span class="p">)</span> <span class="nx">Revive</span><span class="p">()</span> <span class="nx">Bird</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="o">*</span><span class="nx">NewBird</span><span class="p">(</span><span class="nx">BirdOptions</span><span class="p">{</span>
+		<span class="nx">decisionEngine</span><span class="p">:</span> <span class="nx">b</span><span class="p">.</span><span class="nx">decisionEngine</span><span class="p">,</span>
+	<span class="p">})</span>
+<span class="p">}</span>
+
+</pre></div>
+            </td>
+          </tr>
+          
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
